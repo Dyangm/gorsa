@@ -1,16 +1,10 @@
 # GoRSA 加解密库
 
-基于 https://github.com/farmerx/gorsa 进行封装优化了如下几点:
-
-- 优化公私钥需要提前注册初始化,在并发情况下公私钥匙会混乱的问题
-- 加密机没有进行base64处理,在跨程序传递或存储过程中都避免base64二次封装
-- 传入返回都统一使用string类型避免转换麻烦
-- 支持 RSAWithSHA1 和 RSAWithSHA256 签名验证算法
 
 获取扩展包:
 
 ```
-go get github.com/wenzhenxi/gorsa
+go get github.com/Dyangm/gorsa
 ```
 
 具体使用:
@@ -22,7 +16,7 @@ package main
 import (
 	"log"
 	"errors"
-	"github.com/wenzhenxi/gorsa"
+	"github.com/Dyangm/gorsa"
 )
 
 var Pubkey = `-----BEGIN 公钥-----

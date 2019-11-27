@@ -47,7 +47,6 @@ func GetPriKey(bit int) (prvkey, pubkey []byte) {
 	return
 }
 
-
 // 设置公钥
 func SetPubKey(publickey []byte) (*rsa.PublicKey, error) {
 	// decode public key

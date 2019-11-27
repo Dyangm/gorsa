@@ -2,16 +2,15 @@ package gorsa
 
 import (
 	"bytes"
-	"crypto/md5"
-	"crypto/rsa"
-	"errors"
-	"fmt"
-	"io/ioutil"
-	"crypto/sha1"
-	"crypto/rand"
 	"crypto"
-	"encoding/base64"
+	"crypto/md5"
+	"crypto/rand"
+	"crypto/rsa"
+	"crypto/sha1"
 	"crypto/sha256"
+	"encoding/base64"
+	"errors"
+	"io/ioutil"
 )
 
 var RSA = &RSASecurity{}
@@ -140,9 +139,7 @@ func (rsas *RSASecurity) SignMd5WithRsa(data string) (string, error) {
 	md5Data := md5.New()
 	s_data := []byte(data)
 	md5Data.Write(s_data)
-	hashed :=  md5Data.Sum(nil)
-
-	fmt.Println(base64.StdEncoding.EncodeToString(hashed))
+	hashed := md5Data.Sum(nil)
 
 	signByte, err := rsa.SignPKCS1v15(rand.Reader, rsas.prikey, crypto.MD5, hashed)
 	sign := base64.StdEncoding.EncodeToString(signByte)
