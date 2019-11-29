@@ -23,32 +23,41 @@ type RSASecurity struct {
 }
 
 //获取私钥
-func (rsas *RSASecurity) GetPrivateKey() string {
-	return rsas.priStr
+func (rsas *RSASecurity) GetPrivateKey() (err error) {
+	priKey, err := getPriKey()
+	if err != nil {
+		return err
+	}
+	rsas.priStr = string(priKey)
+	rsas.prikey, err = setPriKey(priKey)
+
+	return err
+}
+
+//获取公钥
+func (rsas *RSASecurity) GetPublicKey() (err error) {
+	pubKey, err := getPubKey(rsas.prikey)
+	if err != nil {
+		return err
+	}
+	rsas.priStr = string(pubKey)
+	rsas.prikey, err = setPriKey(pubKey)
+
+	return err
 }
 
 // 设置公钥
 func (rsas *RSASecurity) SetPublicKey(pubStr string) (err error) {
 	rsas.pubStr = pubStr
-	rsas.pubkey, err = rsas.GetPublickey()
+	rsas.pubkey, err = setPubKey([]byte(rsas.pubStr))
 	return err
 }
 
 // 设置私钥
 func (rsas *RSASecurity) SetPrivateKey(priStr string) (err error) {
 	rsas.priStr = priStr
-	rsas.prikey, err = rsas.GetPrivatekey()
+	rsas.prikey, err = setPriKey([]byte(rsas.priStr))
 	return err
-}
-
-// *rsa.PublicKey
-func (rsas *RSASecurity) GetPrivatekey() (*rsa.PrivateKey, error) {
-	return SetPriKey([]byte(rsas.priStr))
-}
-
-// *rsa.PrivateKey
-func (rsas *RSASecurity) GetPublickey() (*rsa.PublicKey, error) {
-	return SetPubKey([]byte(rsas.pubStr))
 }
 
 // 公钥加密

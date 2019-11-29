@@ -22,33 +22,37 @@ var (
 	ErrPrivateKey      = errors.New("get private key error")
 )
 
-func GetPriKey(bit int) (prvkey, pubkey []byte) {
-	// 生成私钥文件
-	privateKey, err := rsa.GenerateKey(rand.Reader, bit)
+// 生成私钥
+func getPriKey() ([]byte, error) {
+	privateKey, err := rsa.GenerateKey(rand.Reader, 1024)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	derStream := x509.MarshalPKCS1PrivateKey(privateKey)
 	block := &pem.Block{
 		Type:  "RSA PRIVATE KEY",
 		Bytes: derStream,
 	}
-	prvkey = pem.EncodeToMemory(block)
+
+	return pem.EncodeToMemory(block), nil
+}
+
+// 生成公钥
+func getPubKey(privateKey *rsa.PrivateKey) ([]byte, error) {
 	publicKey := &privateKey.PublicKey
 	derPkix, err := x509.MarshalPKIXPublicKey(publicKey)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	block = &pem.Block{
+	block := &pem.Block{
 		Type:  "PUBLIC KEY",
 		Bytes: derPkix,
 	}
-	pubkey = pem.EncodeToMemory(block)
-	return
+	return pem.EncodeToMemory(block), nil
 }
 
 // 设置公钥
-func SetPubKey(publickey []byte) (*rsa.PublicKey, error) {
+func setPubKey(publickey []byte) (*rsa.PublicKey, error) {
 	// decode public key
 	block, _ := pem.Decode(publickey)
 	if block == nil {
@@ -63,7 +67,7 @@ func SetPubKey(publickey []byte) (*rsa.PublicKey, error) {
 }
 
 // 设置私钥
-func SetPriKey(privatekey []byte) (*rsa.PrivateKey, error) {
+func setPriKey(privatekey []byte) (*rsa.PrivateKey, error) {
 	block, _ := pem.Decode(privatekey)
 	if block == nil {
 		return nil, errors.New("get private key error")

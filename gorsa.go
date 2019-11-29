@@ -4,6 +4,26 @@ import (
 	"encoding/base64"
 )
 
+// 获取私钥
+func GetPrivateKey() (string, error) {
+	grsa := RSASecurity{}
+	err := grsa.GetPrivateKey()
+
+	return grsa.priStr, err
+}
+
+// 获取公钥
+func GetPublicKey(privateKey string) (string, error) {
+	grsa := RSASecurity{}
+	err := grsa.SetPrivateKey(privateKey)
+	if err != nil {
+		return "", err
+	}
+	err = grsa.GetPublicKey()
+
+	return grsa.priStr, err
+}
+
 // 公钥加密
 func PublicEncrypt(data, publicKey string) (string, error) {
 
