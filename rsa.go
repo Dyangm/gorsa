@@ -40,8 +40,8 @@ func (rsas *RSASecurity) GetPublicKey() (err error) {
 	if err != nil {
 		return err
 	}
-	rsas.priStr = string(pubKey)
-	rsas.prikey, err = setPriKey(pubKey)
+	rsas.pubStr = string(pubKey)
+	rsas.pubkey, err = setPubKey(pubKey)
 
 	return err
 }

@@ -21,7 +21,7 @@ func GetPublicKey(privateKey string) (string, error) {
 	}
 	err = grsa.GetPublicKey()
 
-	return grsa.priStr, err
+	return grsa.pubStr, err
 }
 
 // 公钥加密
